@@ -24,6 +24,7 @@ namespace BlogApp
                     opts.Password.RequireLowercase = false;
                     opts.Password.RequireUppercase = false;
                     opts.Password.RequireDigit = false;
+                    opts.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+àáâãäå¸æçèéêëìíîïğñòóôõö÷øùúûüışÿÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞß";
                     opts.User.RequireUniqueEmail = true;
                 })
                 .AddEntityFrameworkStores<AppDbContext>();
