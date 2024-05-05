@@ -14,9 +14,9 @@
 		</div>
 		<div style="margin-bottom: 5px">
 			<table>
-				<label>Теги</label>
-				@if (Model is not null)
+				@if (Model.Tags.Count > 0 )
 				{
+					<label>Теги</label>
 					@for (int i = 0; i < Model.Tags.Count; i++)
 					{
 						if (i % 3 == 0)
@@ -34,7 +34,7 @@
 		</div>
 		<div style="margin-bottom: 5px">
 			<label asp-for="Content"></label><br/>
-			<textarea class="form-control" id="editor" rows="10" name="editor" asp-for="Content"></textarea>
+			<textarea class="form-control" id="Content" rows="10" name="Content" asp-for="Content"></textarea>
 			<span asp-validation-for="Content" class="text-danger"></span>
 		</div>
 		<div>
