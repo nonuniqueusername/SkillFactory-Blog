@@ -24,7 +24,7 @@
 		{
 			<div class="card w-75">
 				<div class="card-body">
-					<h5 class="card-title">@tag.Text</h5>
+					<h5 class="card-title">@tag.Name</h5>
 					@*<h7>Статей с тегом: @tag.Posts.Select(p => p.Tags.Where(t => t.Id == @tag.Id)).Count()</h7>*@
 					@if (User.IsInRole("Администратор"))
 					{

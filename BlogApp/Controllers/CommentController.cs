@@ -41,7 +41,9 @@ namespace BlogApp.Controllers
         {
             model.PostId = postId;
 
-            var user = await _userManager.FindByNameAsync(User?.Identity?.Name);
+            model.Author = User?.Identity?.Name;
+
+			var user = await _userManager.FindByNameAsync(User?.Identity?.Name);
 
             var post = _commentService.CreateComment(model, new Guid(user.Id));
 
@@ -66,11 +68,11 @@ namespace BlogApp.Controllers
         [Authorize]
         [Route("Comment/Edit")]
         [HttpPost]
-        public async Task<IActionResult> EditComment(CommentEditViewModel model)
+        public async Task<IActionResult> EditComment(CommentEditViewModel model, Guid Id)
         {
             if (ModelState.IsValid)
             {
-                await _commentService.EditComment(model, model.Id);
+                await _commentService.EditComment(model, Id);
 
                 return RedirectToAction("GetPosts", "Post");
             }

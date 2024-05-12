@@ -49,6 +49,7 @@ namespace BlogApp.BLL.Services
             {
                 Content = comment.Content,
                 Author = comment.AuthorName,
+                Id = id
             };
 
             return result;

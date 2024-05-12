@@ -14,10 +14,10 @@
 		</div>
 		<div style="margin-bottom: 5px">
 			<table>
-				@if (Model.Tags.Count > 0 )
+				@if (Model is not null && Model.Tags?.Count > 0)
 				{
 					<label>Теги</label>
-					@for (int i = 0; i < Model.Tags.Count; i++)
+					@for (int i = 0; i < Model.Tags?.Count; i++)
 					{
 						if (i % 3 == 0)
 						{
@@ -41,7 +41,7 @@
 			<input class="btn btn-sm btn-primary" type="submit" value="Создать" onclick=""/>
 		</div>
 		<p>
-			<a method="get" asp-controller="Post" asp-action="GetPosts">Все статьи </a>
+			<a method="get" asp-controller="Post" asp-action="GetPosts">Все статьи</a>
 		</p>
 	</form>
 </div>

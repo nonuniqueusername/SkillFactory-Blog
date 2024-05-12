@@ -36,7 +36,7 @@ namespace BlogApp.BLL.Services
             var tag = _repo.GetTag(id);
             var result = new TagEditViewModel()
             {
-                Name = tag.Text
+                Name = tag.Name
             };
 
             return result;
@@ -45,7 +45,7 @@ namespace BlogApp.BLL.Services
         public async Task EditTag(TagEditViewModel model, Guid id)
         {
             var tag = _repo.GetTag(id);
-            tag.Text = model.Name;
+            tag.Name = model.Name;
             await _repo.UpdateTag(tag);
         }
 

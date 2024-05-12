@@ -35,7 +35,7 @@ namespace BlogApp.BLL.Services
         {
             var post = new Post();
 
-            var allTags = _tagRepo.GetAllTags().Select(t => new TagViewModel() { Id = t.Id, Name = t.Text }).ToList();
+            var allTags = _tagRepo.GetAllTags().Select(t => new TagViewModel() { Id = t.Id, Name = t.Name }).ToList();
 
             var model = new PostCreateViewModel
             {
@@ -84,7 +84,7 @@ namespace BlogApp.BLL.Services
         {
             var post = _repo.GetPost(id);
 
-            var tags = _tagRepo.GetAllTags().Select(t => new TagViewModel() { Id = t.Id, Name = t.Text }).ToList();
+            var tags = _tagRepo.GetAllTags().Select(t => new TagViewModel() { Id = t.Id, Name = t.Name }).ToList();
 
             foreach (var tag in tags)
             {
