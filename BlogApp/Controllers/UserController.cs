@@ -3,16 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BlogApp.BLL.Services.IServices;
 using BlogApp.BLL.ViewModels.Users;
+using NLog;
 
 namespace BlogApp.Controllers
 {
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+		private readonly ILogger<UserController> Logger;
 
-        public UserController(IUserService userService)
+		public UserController(IUserService userService, ILogger<UserController> logger)
         {
             _userService = userService;
+            Logger = logger;
         }
 
         /// <summary>
@@ -39,7 +42,8 @@ namespace BlogApp.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+					Logger.LogInformation($"Осуществлен вход пользователя с адресом - {model.Email}");
+					return RedirectToAction("Index", "Home");
                 }
 
                 else
@@ -73,7 +77,8 @@ namespace BlogApp.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("GetAccounts", "User");
+					Logger.LogInformation($"Создан аккаунт, пользователем с правами администратора, с использованием адреса - {model.Email}");
+					return RedirectToAction("GetAccounts", "User");
                 }
                 else
                 {
@@ -109,7 +114,8 @@ namespace BlogApp.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+					Logger.LogInformation($"Создан аккаунт с использованием адреса - {model.Email}");
+					return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -146,8 +152,9 @@ namespace BlogApp.Controllers
             if (ModelState.IsValid)
             {
                 await _userService.EditAccount(model);
+				Logger.LogInformation($"Аккаунт {model.UserName} был изменен");
 
-                return RedirectToAction("GetAccounts", "User");
+				return RedirectToAction("GetAccounts", "User");
             }
 
             else
@@ -182,8 +189,9 @@ namespace BlogApp.Controllers
             var account = await _userService.GetAccount(id);
 
             await _userService.RemoveAccount(id);
+			Logger.LogInformation($"Аккаунт с id - {id} удален");
 
-            return RedirectToAction("GetAccounts", "User");
+			return RedirectToAction("GetAccounts", "User");
         }
 
         /// <summary>
@@ -195,8 +203,9 @@ namespace BlogApp.Controllers
         public async Task<IActionResult> LogoutAccount()
         {
             await _userService.LogoutAccount();
+			Logger.LogInformation($"Осуществлен выход из аккаунта");
 
-            return RedirectToAction("Index", "Home");
+			return RedirectToAction("Index", "Home");
         }
 
         /// <summary>

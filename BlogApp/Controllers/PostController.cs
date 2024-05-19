@@ -12,12 +12,14 @@ namespace BlogApp.Controllers
     {
         private readonly IPostService _postService;
         private readonly UserManager<User> _userManager;
+		private readonly ILogger<PostController> Logger;
 
-        public PostController(IPostService postService, UserManager<User> userManager)
+		public PostController(IPostService postService, UserManager<User> userManager, ILogger<PostController> logger)
         {
             _postService = postService;
             _userManager = userManager;
-        }
+			Logger = logger;
+		}
 
         /// <summary>
         /// [Get] Метод, показывания поста
@@ -59,13 +61,15 @@ namespace BlogApp.Controllers
             if (string.IsNullOrEmpty(model.Title) || string.IsNullOrEmpty(model.Content))
             {
                 ModelState.AddModelError("", "Не все поля заполнены");
+				Logger.LogError($"Пост не создан, ошибка при создании - Не все поля заполнены");
 
-                return View(model);
+				return View(model);
             }
 
             await _postService.CreatePost(model);
+			Logger.LogInformation($"Создан пост - {model.Title}");
 
-            return RedirectToAction("GetPosts", "Post");
+			return RedirectToAction("GetPosts", "Post");
         }
 
         /// <summary>
@@ -91,13 +95,15 @@ namespace BlogApp.Controllers
             if (string.IsNullOrEmpty(model.Title) || string.IsNullOrEmpty(model.Content))
             {
                 ModelState.AddModelError("", "Не все поля заполненны");
+				Logger.LogError($"Пост не отредактирован, ошибка при редактировании - Не все поля заполнены");
 
-                return View(model);
+				return View(model);
             }
 
             await _postService.EditPost(model, Id);
+			Logger.LogInformation($"Пост {model.Title} отредактирован");
 
-            return RedirectToAction("GetPosts", "Post");
+			return RedirectToAction("GetPosts", "Post");
         }
 
         /// <summary>
@@ -123,8 +129,9 @@ namespace BlogApp.Controllers
         public async Task<IActionResult> RemovePost(Guid id)
         {
             await _postService.RemovePost(id);
+			Logger.LogInformation($"Пост с id {id} удален");
 
-            return RedirectToAction("GetPosts", "Post");
+			return RedirectToAction("GetPosts", "Post");
         }
 
         /// <summary>

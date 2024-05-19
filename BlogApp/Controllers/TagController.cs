@@ -8,10 +8,12 @@ namespace BlogApp.Controllers
     public class TagController : Controller
     {
         private readonly ITagService _tagService;
+		private readonly ILogger<TagController> Logger;
 
-        public TagController(ITagService tagService)
+		public TagController(ITagService tagService, ILogger<TagController> logger)
         {
             _tagService = tagService;
+            Logger = logger;
         }
 
         /// <summary>
@@ -36,12 +38,14 @@ namespace BlogApp.Controllers
             if (ModelState.IsValid)
             {
                 var tagId = _tagService.CreateTag(model);
+				Logger.LogInformation($"Создан тег - {model.Name}");
 
-                return RedirectToAction("GetTags", "Tag");
+				return RedirectToAction("GetTags", "Tag");
             }
             else
             {
-                return View(model);
+				Logger.LogError($"Ошибка при создании тега - {model.Name}");
+				return View(model);
             }
         }
 
@@ -69,12 +73,14 @@ namespace BlogApp.Controllers
             if (ModelState.IsValid)
             {
                 await _tagService.EditTag(model, id);
+				Logger.LogInformation($"Изменен тег - {model.Name}");
 
-                return RedirectToAction("GetTags", "Tag");
+				return RedirectToAction("GetTags", "Tag");
             }
             else
             {
-                return View(model);
+				Logger.LogError($"Ошибка при изменении тега - {model.Name}");
+				return View(model);
             }
         }
 
@@ -101,8 +107,9 @@ namespace BlogApp.Controllers
         {
             var tag = await _tagService.GetTag(id);
             await _tagService.RemoveTag(id);
+			Logger.LogInformation($"Удаленн тег - {id}");
 
-            return RedirectToAction("GetTags", "Tag");
+			return RedirectToAction("GetTags", "Tag");
         }
 
         /// <summary>

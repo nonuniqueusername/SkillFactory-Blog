@@ -9,10 +9,12 @@ namespace BlogApp.Controllers
     public class RoleController : Controller
     {
         private readonly IRoleService _roleService;
+		private readonly ILogger<RoleController> Logger;
 
-        public RoleController(IRoleService roleService)
+		public RoleController(IRoleService roleService, ILogger<RoleController> logger)
         {
             _roleService = roleService;
+            Logger = logger;
         }
 
         /// <summary>
@@ -37,14 +39,16 @@ namespace BlogApp.Controllers
             if (ModelState.IsValid)
             {
                 var roleId = await _roleService.CreateRole(model);
+				Logger.LogInformation($"Созданна роль - {model.Name}");
 
-                return RedirectToAction("GetRoles", "Role");
+				return RedirectToAction("GetRoles", "Role");
             }
             else
             {
                 ModelState.AddModelError("", "Некорректные данные");
+				Logger.LogError($"Роль {model.Name} не создана, ошибка при создании - Некорректные данные");
 
-                return View(model);
+				return View(model);
             }
         }
 
@@ -74,14 +78,16 @@ namespace BlogApp.Controllers
             if (ModelState.IsValid)
             {
                 await _roleService.EditRole(model);
+				Logger.LogInformation($"Измененна роль - {model.Name}");
 
-                return RedirectToAction("GetRoles", "Role");
+				return RedirectToAction("GetRoles", "Role");
             }
             else
             {
                 ModelState.AddModelError("", "Некорректные данные");
+				Logger.LogError($"Роль {model.Name} не изменена, ошибка при изменении - Некорректные данные");
 
-                return View(model);
+				return View(model);
             }
         }
 
@@ -109,8 +115,9 @@ namespace BlogApp.Controllers
         public async Task<IActionResult> RemoveRole(Guid id)
         {
             await _roleService.RemoveRole(id);
+			Logger.LogInformation($"Удаленна роль - {id}");
 
-            return RedirectToAction("GetRoles", "Role");
+			return RedirectToAction("GetRoles", "Role");
         }
 
         /// <summary>

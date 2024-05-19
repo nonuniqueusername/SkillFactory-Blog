@@ -6,6 +6,7 @@ using BlogApp.BLL.Services;
 using BlogApp.BLL.Services.IServices;
 using BlogApp.BLL.ViewModels.Comments;
 using BlogApp.DAL.Models;
+using NLog;
 
 namespace BlogApp.Controllers
 {
@@ -13,11 +14,13 @@ namespace BlogApp.Controllers
     {
         private readonly ICommentService _commentService;
         private readonly UserManager<User> _userManager;
+        private readonly ILogger<CommentController> Logger;
 
-        public CommentController(ICommentService commentService, UserManager<User> userManager)
+		public CommentController(ICommentService commentService, UserManager<User> userManager, ILogger<CommentController> logger)
         {
             _commentService = commentService;
             _userManager = userManager;
+            Logger = logger;
         }
 
         // <summary>
@@ -46,8 +49,9 @@ namespace BlogApp.Controllers
 			var user = await _userManager.FindByNameAsync(User?.Identity?.Name);
 
             var post = _commentService.CreateComment(model, new Guid(user.Id));
+			Logger.LogInformation($"Пользователь {model.Author} добавил комментарий к статье {postId}");
 
-            return RedirectToAction("GetPosts", "Post");
+			return RedirectToAction("GetPosts", "Post");
         }
 
         /// <summary>
@@ -73,8 +77,9 @@ namespace BlogApp.Controllers
             if (ModelState.IsValid)
             {
                 await _commentService.EditComment(model, Id);
+				Logger.LogInformation($"Пользователь {model.Author} изменил комментарий {model.Id}");
 
-                return RedirectToAction("GetPosts", "Post");
+				return RedirectToAction("GetPosts", "Post");
             }
             else
             {
@@ -107,8 +112,9 @@ namespace BlogApp.Controllers
         public async Task<IActionResult> RemoveComment(Guid id)
         {
             await _commentService.RemoveComment(id);
+			Logger.LogInformation($"Комментарий с id {id} удален");
 
-            return RedirectToAction("GetPosts", "Post");
+			return RedirectToAction("GetPosts", "Post");
         }
         /// <summary>
         /// [Get] Метод, получения всех тегов
