@@ -7,7 +7,8 @@ using BlogApp.DAL.Models;
 
 namespace BlogApp.Controllers
 {
-    public class HomeController : Controller
+	[ApiExplorerSettings(IgnoreApi = true)]
+	public class HomeController : Controller
     {
         private readonly IHomeService _homeService;
 		private readonly ILogger<HomeController> Logger;

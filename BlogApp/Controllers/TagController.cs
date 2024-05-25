@@ -5,7 +5,8 @@ using BlogApp.BLL.ViewModels.Tags;
 
 namespace BlogApp.Controllers
 {
-    public class TagController : Controller
+	[ApiExplorerSettings(IgnoreApi = true)]
+	public class TagController : Controller
     {
         private readonly ITagService _tagService;
 		private readonly ILogger<TagController> Logger;

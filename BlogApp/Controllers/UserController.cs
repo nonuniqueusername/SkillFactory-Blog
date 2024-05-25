@@ -7,7 +7,8 @@ using NLog;
 
 namespace BlogApp.Controllers
 {
-    public class UserController : Controller
+	[ApiExplorerSettings(IgnoreApi = true)]
+	public class UserController : Controller
     {
         private readonly IUserService _userService;
 		private readonly ILogger<UserController> Logger;

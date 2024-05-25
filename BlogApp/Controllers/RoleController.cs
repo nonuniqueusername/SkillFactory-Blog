@@ -6,7 +6,8 @@ using BlogApp.BLL.ViewModels.Roles;
 
 namespace BlogApp.Controllers
 {
-    public class RoleController : Controller
+	[ApiExplorerSettings(IgnoreApi = true)]
+	public class RoleController : Controller
     {
         private readonly IRoleService _roleService;
 		private readonly ILogger<RoleController> Logger;

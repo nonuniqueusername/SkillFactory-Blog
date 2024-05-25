@@ -16,6 +16,7 @@ namespace BlogApp.DAL
         /// Ссылка на таблицу Users
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
     }

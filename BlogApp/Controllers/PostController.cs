@@ -8,7 +8,8 @@ using BlogApp.DAL.Models;
 
 namespace BlogApp.Controllers
 {
-    public class PostController : Controller
+	[ApiExplorerSettings(IgnoreApi = true)]
+	public class PostController : Controller
     {
         private readonly IPostService _postService;
         private readonly UserManager<User> _userManager;
